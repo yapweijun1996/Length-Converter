@@ -1,288 +1,268 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Length Converter</title>
-		<style>
-			body {
-				font-family: Arial, sans-serif;
-				background-color: #f4f4f9;
-				margin: 0;
-				padding: 20px;
-			}
-			h1 {
-				text-align: center;
-				color: #333;
-			}
-			.converter-container {
-				max-width: 600px;
-				margin: auto;
-				background: white;
-				border-radius: 8px;
-				box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-				padding: 20px;
-			}
-			.input-group {
-				margin-bottom: 15px;
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-			}
-			input[type="number"] {
-				width: 70%;
-				padding: 10px;
-				border: 1px solid #ddd;
-				border-radius: 4px;
-				font-size: 16px;
-				transition: border-color 0.3s;
-			}
-			input[type="number"]:focus {
-				border-color: #007bff;
-				outline: none;
-			}
-			label {
-				width: 25%;
-				text-align: right;
-				font-size: 16px;
-				color: #555;
-				margin-right: 10px;
-			}
-			#result {
-				margin-top: 20px;
-				text-align: center;
-				font-size: 18px;
-				color: #007bff;
-				font-weight: bold;
-			}
-		</style>
-	</head>
-	<body>
-		<h1>Length Converter</h1>
-		<div class="converter-container">
-			<div class="input-group">
-				<input id="input_inches" placeholder="inches" oninput="convert('input_inches')" type="number" onclick="this.select();">
-				<label for="input_inches">inches</label>
-			</div>
-			<div class="input-group">
-				<input id="input_mm" placeholder="mm" oninput="convert('input_mm')" type="number" onclick="this.select();">
-				<label for="input_mm">mm</label>
-			</div>
-			<div class="input-group">
-				<input id="input_cm" placeholder="cm" oninput="convert('input_cm')" type="number" onclick="this.select();">
-				<label for="input_cm">cm</label>
-			</div>
-			<div class="input-group">
-				<input id="input_km" placeholder="km" oninput="convert('input_km')" type="number" onclick="this.select();">
-				<label for="input_km">km</label>
-			</div>
-			<div class="input-group">
-				<input id="input_m" placeholder="m" oninput="convert('input_m')" type="number" onclick="this.select();">
-				<label for="input_m">m</label>
-			</div>
-			<div class="input-group">
-				<input id="input_um" placeholder="µm" oninput="convert('input_um')" type="number" onclick="this.select();">
-				<label for="input_um">µm</label>
-			</div>
-			<div class="input-group">
-				<input id="input_nm" placeholder="nm" oninput="convert('input_nm')" type="number" onclick="this.select();">
-				<label for="input_nm">nm</label>
-			</div>
-			<div class="input-group">
-				<input id="input_mi" placeholder="miles" oninput="convert('input_mi')" type="number" onclick="this.select();">
-				<label for="input_mi">miles</label>
-			</div>
-			<div class="input-group">
-				<input id="input_yd" placeholder="yards" oninput="convert('input_yd')" type="number" onclick="this.select();">
-				<label for="input_yd">yards</label>
-			</div>
-			<div class="input-group">
-				<input id="input_ft" placeholder="feet" oninput="convert('input_ft')" type="number" onclick="this.select();">
-				<label for="input_ft">feet</label>
-			</div>
-			<div class="input-group">
-				<input id="input_nmile" placeholder="nautical miles" oninput="convert('input_nmile')" type="number" onclick="this.select();">
-				<label for="input_nmile">nautical miles</label>
-			</div>
-			<div class="input-group">
-				<input id="input_px" placeholder="Pixels" oninput="convert('input_px')" type="number" onclick="this.select();">
-				<label for="input_px">px(96 DPI)</label>
-			</div>
-			<p id="result"></p>
-		</div>
-		<script>
-			const conversions = {
-				inches: {
-					mm: val => val * 25.4,
-					cm: val => val * 2.54,
-					km: val => val * 2.54e-5,
-					m: val => val * 0.0254,
-					um: val => val * 25400,
-					nm: val => val * 2.54e7,
-					mi: val => val * 1.5783e-5,
-					yd: val => val * 0.0277778,
-					ft: val => val * 0.0833333,
-					nmile: val => val * 1.3715e-5,
-					px: val => val * 96,  // Assuming 96 DPI
-				},
-				mm: {
-					inches: val => val / 25.4,
-					cm: val => val / 10,
-					km: val => val / 1e6,
-					m: val => val / 1000,
-					um: val => val * 1000,
-					nm: val => val * 1e6,
-					mi: val => val / 1.609e+6,
-					yd: val => val / 914.4,
-					ft: val => val / 304.8,
-					nmile: val => val / 1.852e+6,
-					px: val => val / 0.264583,  // mm to px
-				},
-				cm: {
-					inches: val => val / 2.54,
-					mm: val => val * 10,
-					km: val => val / 100000,
-					m: val => val / 100,
-					um: val => val * 10000,
-					nm: val => val * 1e7,
-					mi: val => val / 160934,
-					yd: val => val / 91.44,
-					ft: val => val / 30.48,
-					nmile: val => val / 185200,
-					px: val => val / 0.0264583,  // cm to px
-				},
-				km: {
-					inches: val => val * 39370.1,
-					mm: val => val * 1e6,
-					cm: val => val * 100000,
-					m: val => val * 1000,
-					um: val => val * 1e9,
-					nm: val => val * 1e12,
-					mi: val => val / 1.609,
-					yd: val => val * 1093.61,
-					ft: val => val * 3280.84,
-					nmile: val => val / 1.852,
-					px: val => val * 2.645833e+5,  // km to px
-				},
-				m: {
-					inches: val => val * 39.3701,
-					mm: val => val * 1000,
-					cm: val => val * 100,
-					km: val => val / 1000,
-					um: val => val * 1e6,
-					nm: val => val * 1e9,
-					mi: val => val / 1609,
-					yd: val => val * 1.09361,
-					ft: val => val * 3.28084,
-					nmile: val => val / 1852,
-					px: val => val * 3779.5275591,  // m to px
-				},
-				um: {
-					inches: val => val / 25400,
-					mm: val => val / 1000,
-					cm: val => val / 10000,
-					km: val => val / 1e9,
-					m: val => val / 1e6,
-					nm: val => val * 1000,
-					mi: val => val / 1.609e9,
-					yd: val => val / 914400,
-					ft: val => val / 304800,
-					nmile: val => val / 1.852e9,
-					px: val => val / 0.000264583,  // um to px
-				},
-				nm: {
-					inches: val => val / 2.54e7,
-					mm: val => val / 1e6,
-					cm: val => val / 1e7,
-					km: val => val / 1e12,
-					m: val => val / 1e9,
-					um: val => val / 1000,
-					mi: val => val / 1.609e12,
-					yd: val => val / 9.144e8,
-					ft: val => val / 3.048e8,
-					nmile: val => val / 1.852e12,
-					px: val => val / 2.54e5,  // nm to px
-				},
-				mi: {
-					inches: val => val * 63360,
-					mm: val => val * 1.609e+6,
-					cm: val => val * 160934,
-					km: val => val * 1.60934,
-					m: val => val * 1609.34,
-					um: val => val * 1.609e+9,
-					nm: val => val * 1.609e+12,
-					yd: val => val * 1760,
-					ft: val => val * 5280,
-					nmile: val => val / 1.15078,
-					px: val => val * 1.0154e+8,  // mi to px
-				},
-				yd: {
-					inches: val => val * 36,
-					mm: val => val * 914.4,
-					cm: val => val * 91.44,
-					km: val => val / 1093.613,
-					m: val => val / 1.093613,
-					um: val => val * 914400,
-					nm: val => val * 9.144e+8,
-					mi: val => val / 1760,
-					ft: val => val * 3,
-					nmile: val => val / 2025.37,
-					px: val => val * 1280,  // yd to px
-				},
-				ft: {
-					inches: val => val * 12,
-					mm: val => val * 304.8,
-					cm: val => val * 30.48,
-					km: val => val / 3280.84,
-					m: val => val / 3.28084,
-					um: val => val * 304800,
-					nm: val => val * 3.048e+8,
-					mi: val => val / 5280,
-					yd: val => val / 3,
-					nmile: val => val / 6076.12,
-					px: val => val * 960,  // ft to px
-				},
-				nmile: {
-					inches: val => val * 72913.4,
-					mm: val => val * 1.852e+6,
-					cm: val => val * 185200,
-					km: val => val * 1.852,
-					m: val => val * 1852,
-					um: val => val * 1.852e+9,
-					nm: val => val * 1.852e+12,
-					mi: val => val * 1.15078,
-					yd: val => val * 2025.37,
-					ft: val => val * 6076.12,
-					px: val => val * 1.15078e+6,  // nmile to px
-				},
-				px: {
-					inches: val => val / 96,    // Assuming 96 DPI
-					mm: val => val * 0.264583,  // px to mm
-					cm: val => val * 0.0264583, // px to cm
-					km: val => val * 2.645833e-5,
-					m: val => val / 3779.5275591,
-					um: val => val * 25400,
-					nm: val => val * 2.54e7,
-					mi: val => val / 63360,
-					yd: val => val / 1280,
-					ft: val => val / 960,
-					nmile: val => val / 1.15078e6,
-				},
-			};
-			
-			function convert(id) {
-				const inputValue = document.getElementById(id).value;
-				if (isNaN(inputValue) || inputValue === "") {
-					return;
-				}
-				
-				const unit = id.split('_')[1];
-				const value = parseFloat(inputValue);
-				
-				for (const [key, func] of Object.entries(conversions[unit])) {
-					document.getElementById('input_' + key).value = func(value);
-				}
-			}
-		</script>
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Length Converter with Adjustable DPI</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Roboto", sans-serif;
+        background: linear-gradient(135deg, #e0eafc, #cfdef3);
+        margin: 0;
+        padding: 20px;
+        color: #333;
+      }
+      h1 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .converter-container {
+        width: 90%;
+        max-width: 600px;
+        margin: 20px auto;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+      }
+      .field-container {
+        margin-bottom: 20px;
+      }
+      .input-group {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+      }
+      label {
+        flex: 0 0 30%;
+        font-size: 16px;
+        color: #555;
+        margin-bottom: 5px;
+      }
+      input[type="number"] {
+        flex: 1 1 65%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        transition: border-color 0.3s, box-shadow 0.3s;
+      }
+      input[type="number"]:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+        outline: none;
+      }
+      .calc-method {
+        font-size: 13px;
+        color: #777;
+        margin-top: 4px;
+        padding-left: 2px;
+      }
+      .button-group {
+        display: flex;
+        justify-content: flex-end;
+      }
+      .reset-button {
+        background-color: #dc3545;
+        color: #fff;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      .reset-button:hover {
+        background-color: #c82333;
+      }
+      @media (max-width: 600px) {
+        .input-group {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        label {
+          flex: 0 0 100%;
+        }
+        input[type="number"] {
+          width: 100%;
+          margin-bottom: 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Length Converter with Adjustable DPI</h1>
+    <div class="converter-container">
+      <!-- DPI Setting (affects px conversion only) -->
+      <div class="field-container">
+        <div class="input-group">
+          <label for="dpi_input">DPI (affects px only)</label>
+          <input
+            type="number"
+            id="dpi_input"
+            value="96"
+            onclick="this.select()"
+            oninput="updateDPI()"
+          />
+        </div>
+        <div id="calc_dpi" class="calc-method"></div>
+      </div>
+      <div id="input-fields"></div>
+      <div class="button-group">
+        <button class="reset-button" onclick="resetFields()">Reset</button>
+      </div>
+    </div>
+    <script>
+      const unitFactors = {
+        inches: 0.0254,
+        mm: 0.001,
+        cm: 0.01,
+        m: 1,
+        km: 1000,
+        um: 1e-6,
+        nm: 1e-9,
+        mi: 1609.34,
+        yd: 0.9144,
+        ft: 0.3048,
+        nmile: 1852,
+      };
+
+      const unitLabels = {
+        inches: "Inches",
+        mm: "Millimeters",
+        cm: "Centimeters",
+        m: "Meters",
+        km: "Kilometers",
+        um: "Micrometers",
+        nm: "Nanometers",
+        mi: "Miles",
+        yd: "Yards",
+        ft: "Feet",
+        nmile: "Nautical Miles",
+        px: "Pixels (96 DPI)",
+      };
+
+      let currentDPI = 96;
+      let lastChangedUnit = null;
+      const container = document.getElementById("input-fields");
+
+      Object.keys(unitLabels).forEach((unit) => {
+        const fieldContainer = document.createElement("div");
+        fieldContainer.className = "field-container";
+
+        const group = document.createElement("div");
+        group.className = "input-group";
+
+        const label = document.createElement("label");
+        label.htmlFor = "input_" + unit;
+        label.textContent = unitLabels[unit];
+
+        const input = document.createElement("input");
+        input.type = "number";
+        input.id = "input_" + unit;
+        input.placeholder = unitLabels[unit];
+        input.onclick = function () {
+          this.select();
+        };
+        input.oninput = function () {
+          convert(unit);
+        };
+
+        group.appendChild(label);
+        group.appendChild(input);
+        fieldContainer.appendChild(group);
+
+        const calcDiv = document.createElement("div");
+        calcDiv.id = "calc_" + unit;
+        calcDiv.className = "calc-method";
+        fieldContainer.appendChild(calcDiv);
+
+        container.appendChild(fieldContainer);
+      });
+
+      function convert(changedUnit) {
+        lastChangedUnit = changedUnit;
+        const dpiVal = currentDPI;
+        const inputElem = document.getElementById("input_" + changedUnit);
+        const inputValue = parseFloat(inputElem.value);
+        if (isNaN(inputValue)) {
+          Object.keys(unitLabels).forEach((unit) => {
+            document.getElementById("input_" + unit).value = "";
+            document.getElementById("calc_" + unit).innerText = "";
+          });
+          return;
+        }
+
+        const changedFactor =
+          changedUnit === "px" ? 0.0254 / dpiVal : unitFactors[changedUnit];
+        document.getElementById("calc_" + changedUnit).innerText =
+          "Input: " + inputValue;
+
+        const baseValue = inputValue * changedFactor;
+        Object.keys(unitLabels).forEach((unit) => {
+          if (unit === changedUnit) return;
+          const targetFactor =
+            unit === "px" ? 0.0254 / dpiVal : unitFactors[unit];
+          const convertedValue = baseValue / targetFactor;
+          const rounded = +convertedValue.toFixed(6);
+          document.getElementById("input_" + unit).value = rounded;
+          let formula =
+            "(" +
+            inputValue +
+            " × " +
+            changedFactor.toFixed(6) +
+            ") ÷ " +
+            targetFactor.toFixed(6) +
+            " = " +
+            rounded;
+          if (unit === "px")
+            formula += " (using DPI: " + dpiVal + ")";
+          document.getElementById("calc_" + unit).innerText =
+            "Calculation: " + formula;
+        });
+      }
+
+      function updateDPI() {
+        const dpiInput = document.getElementById("dpi_input");
+        let dpiVal = parseFloat(dpiInput.value);
+        if (isNaN(dpiVal) || dpiVal <= 0) {
+          dpiVal = 96;
+          dpiInput.value = 96;
+        }
+        currentDPI = dpiVal;
+        unitLabels.px = "Pixels (" + currentDPI + " DPI)";
+        const pxLabel = document.querySelector("label[for='input_px']");
+        if (pxLabel) {
+          pxLabel.textContent = unitLabels.px;
+        }
+        document.getElementById("calc_dpi").innerText =
+          "DPI setting: " +
+          currentDPI +
+          " DPI (px factor: " +
+          (0.0254 / currentDPI).toFixed(6) +
+          ")";
+        if (lastChangedUnit) {
+          convert(lastChangedUnit);
+        }
+      }
+
+      function resetFields() {
+        document.getElementById("dpi_input").value = 96;
+        currentDPI = 96;
+        updateDPI();
+        lastChangedUnit = null;
+        Object.keys(unitLabels).forEach((unit) => {
+          document.getElementById("input_" + unit).value = "";
+          document.getElementById("calc_" + unit).innerText = "";
+        });
+      }
+    </script>
+  </body>
 </html>
